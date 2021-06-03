@@ -23,7 +23,7 @@ jobs:
         with:
           java-version: '16'
           distribution: "adopt"
-      - name: Run unit tests
+      - name: Run tests
         run: mvn test -Punit
   integration:
     runs-on: ubuntu-latest
@@ -34,5 +34,5 @@ jobs:
         with:
           java-version: '16'
           distribution: "adopt"
-      - name: Run unit tests
+      - name: Run tests
         run: mvn test -Pintegration
