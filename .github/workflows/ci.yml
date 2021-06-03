@@ -1,0 +1,35 @@
+name: WaterCollector ci
+
+on: [push]
+
+jobs:
+  validate-mvn:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 16
+        uses: actions/setup-java@v2
+        with:
+          java-version: '16'
+      - name: Validate mvn
+        run: mvn validate
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 16
+        uses: actions/setup-java@v2
+        with:
+          java-version: '16'
+      - name: Run unit tests
+        run: mvn test -Punit
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 16
+        uses: actions/setup-java@v2
+        with:
+          java-version: '16'
+      - name: Run unit tests
+        run: mvn test -Pintegration
