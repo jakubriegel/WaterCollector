@@ -11,6 +11,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '16'
+          distribution: "adopt"
       - name: Validate mvn
         run: mvn validate
   unit:
@@ -21,6 +22,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '16'
+          distribution: "adopt"
       - name: Run unit tests
         run: mvn test -Punit
   integration:
@@ -31,5 +33,6 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '16'
+          distribution: "adopt"
       - name: Run unit tests
         run: mvn test -Pintegration
