@@ -4,6 +4,7 @@ import eu.jrie.crx.watercollector.domain.volume.offset.OffsetRetriever;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class VolumeCalculatorFactory {
@@ -14,7 +15,7 @@ public class VolumeCalculatorFactory {
         this.offsetRetriever = offsetRetriever;
     }
 
-    public VolumeCalculator create(ArrayList<Integer> surface) {
-        return new VolumeCalculator(offsetRetriever, surface);
+    public VolumeCalculator create(List<Integer> surface) {
+        return new VolumeCalculator(offsetRetriever, new ArrayList<>(surface));
     }
 }

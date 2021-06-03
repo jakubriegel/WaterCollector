@@ -1,15 +1,14 @@
 package eu.jrie.crx.watercollector.domain.volume
 
-import eu.jrie.crx.watercollector.domain.volume.calculator.VolumeCalculatorFactory
-import eu.jrie.crx.watercollector.domain.volume.offset.OffsetRetriever
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
+@SpringBootTest
 class VolumeServiceIntegrationSpec extends Specification {
 
-    private static final offsetRetriever = new OffsetRetriever()
-    private static final volumeCalculatorFactory = new VolumeCalculatorFactory(offsetRetriever)
-
-    private static final service = new VolumeService(volumeCalculatorFactory)
+    @Autowired
+    private VolumeService service
 
     def "should return 0 for empty surface"() {
         given:
