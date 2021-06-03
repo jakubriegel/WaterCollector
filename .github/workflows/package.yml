@@ -1,4 +1,4 @@
-name: WaterCollector ci
+name: WaterCollector build
 
 on: [push]
 
