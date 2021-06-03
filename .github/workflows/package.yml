@@ -1,0 +1,31 @@
+name: WaterCollector build
+
+on: [push]
+
+jobs:
+  build-jar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 16
+        uses: actions/setup-java@v2
+        with:
+          java-version: '16'
+          distribution: "adopt"
+      - name: Build boot jar
+        run: mvn package spring-boot:repackage
+#     publish to local repository
+  build-dev-container:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Docker build
+        run: docker build -t watercollector-dev --target develop-stage .
+#       publish to local docker registry
+  build-prod-container:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Docker build
+        run: docker build -t watercollector --target production-stage .
+#       publish to local docker registry
