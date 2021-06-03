@@ -1,0 +1,276 @@
+{
+	"info": {
+		"_postman_id": "14b20b22-117c-4820-b451-5d012ea7eb7f",
+		"name": "WaterCollector",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "volume",
+			"item": [
+				{
+					"name": "details",
+					"item": []
+				},
+				{
+					"name": "volume",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"  pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Contains surface\", function () {\r",
+									"  var jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.surface).to.eql([1, 2, 4, 1, 2, 4]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Contains correct volume\", function () {\r",
+									"  var jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.volume).to.eql(5);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{service}}/water/volume?bars=1,2,4,1,2,4",
+							"host": [
+								"{{service}}"
+							],
+							"path": [
+								"water",
+								"volume"
+							],
+							"query": [
+								{
+									"key": "bars",
+									"value": "1,2,4,1,2,4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "volume (empty bars)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"  pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Contains surface\", function () {\r",
+									"  var jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.surface).to.eql([]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Contains correct volume\", function () {\r",
+									"  var jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.volume).to.eql(0);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{service}}/water/volume?bars=",
+							"host": [
+								"{{service}}"
+							],
+							"path": [
+								"water",
+								"volume"
+							],
+							"query": [
+								{
+									"key": "bars",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "volume (no bars)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"  pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"  pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Contains code\", function () {\r",
+									"  var jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.code).to.eql(\"MISSING_PARAMETER\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Contains path\", function () {\r",
+									"  var jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.path).to.eql(\"/water/volume\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Contains message\", function () {\r",
+									"  var jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.message).to.eql(\"The request is missing required parameters.\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Contains requiredParameters\", function () {\r",
+									"  var jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.details.requiredParameters).to.eql([\"bars\"]);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{service}}/water/volume",
+							"host": [
+								"{{service}}"
+							],
+							"path": [
+								"water",
+								"volume"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "volume (negative bars)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"  pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"  pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Contains code\", function () {\r",
+									"  var jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.code).to.eql(\"INVALID_BAR_HEIGHT\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Contains path\", function () {\r",
+									"  var jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.path).to.eql(\"/water/volume\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Contains message\", function () {\r",
+									"  var jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.message).to.eql(\"Provided surface contains negative bar heights.\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Contains surface\", function () {\r",
+									"  var jsonData = pm.response.json();\r",
+									"  pm.expect(jsonData.details.surface).to.eql([1, -2, 3]);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{service}}/water/volume?bars=1,-2,3",
+							"host": [
+								"{{service}}"
+							],
+							"path": [
+								"water",
+								"volume"
+							],
+							"query": [
+								{
+									"key": "bars",
+									"value": "1,-2,3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "HOST",
+			"value": "localhost"
+		},
+		{
+			"key": "PORT",
+			"value": "80"
+		},
+		{
+			"key": "service",
+			"value": "http://localhost:80"
+		}
+	]
+}
