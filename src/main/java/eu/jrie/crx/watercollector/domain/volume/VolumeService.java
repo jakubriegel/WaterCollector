@@ -14,7 +14,8 @@ public class VolumeService {
         this.volumeCalculatorFactory = volumeCalculatorFactory;
     }
 
-    public int calculateVolume(List<Integer> surface) {
+    public int calculateVolume(List<Integer> surface) throws InvalidBarHeightException {
+        verifyAllHeightsAreValid(surface);
         if (hasNoContainersCandidates(surface)) {
             return 0;
         } else {
@@ -29,5 +30,14 @@ public class VolumeService {
                 surface.stream()
                     .distinct()
                     .count() == 1;
+    }
+
+    private static void verifyAllHeightsAreValid(List<Integer> surface) throws InvalidBarHeightException {
+        var containsInvalid = surface.stream()
+                .anyMatch(bar -> bar < 0);
+
+        if (containsInvalid) {
+            throw new InvalidBarHeightException(surface);
+        }
     }
 }

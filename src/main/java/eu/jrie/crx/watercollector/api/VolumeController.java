@@ -1,6 +1,7 @@
 package eu.jrie.crx.watercollector.api;
 
 import eu.jrie.crx.watercollector.api.message.VolumeResponse;
+import eu.jrie.crx.watercollector.domain.volume.InvalidBarHeightException;
 import eu.jrie.crx.watercollector.domain.volume.VolumeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ public class VolumeController {
     }
 
     @GetMapping(value = "volume", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<VolumeResponse> getVolume(@RequestParam List<String> bars) {
+    public ResponseEntity<VolumeResponse> getVolume(@RequestParam List<String> bars) throws InvalidBarHeightException {
         var surface = bars.stream()
                 .map(Integer::valueOf)
                 .toList();

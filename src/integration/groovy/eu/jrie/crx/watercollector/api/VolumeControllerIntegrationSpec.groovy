@@ -66,9 +66,34 @@ class VolumeControllerIntegrationSpec extends Specification {
             .andExpect(content().contentType(APPLICATION_JSON))
             .andExpect(content().json("""
                 {
+                  "code": "MISSING_PARAMETER",
                   "path": "/water/volume",
                   "message": "The request is missing required parameters.",
-                  "requiredParameters": ["bars"]
+                  "details": {
+                    "requiredParameters": ["bars"]
+                  }
+                }
+            """))
+    }
+
+    def "should return status 400 when surface contains negative bars"() {
+        given:
+        final request = get("/water/volume")
+            .param("bars", "-1")
+            .accept(APPLICATION_JSON)
+
+        expect:
+        mvc.perform(request)
+            .andExpect(status().isBadRequest())
+            .andExpect(content().contentType(APPLICATION_JSON))
+            .andExpect(content().json("""
+                {
+                  "code": "INVALID_BAR_HEIGHT",
+                  "path": "/water/volume",
+                  "message": "Provided surface contains negative bar heights.",
+                  "details": {
+                    "surface": [-1]
+                  }
                 }
             """))
     }
