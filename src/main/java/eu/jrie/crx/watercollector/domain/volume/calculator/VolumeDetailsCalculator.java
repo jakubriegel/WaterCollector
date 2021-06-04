@@ -2,6 +2,7 @@ package eu.jrie.crx.watercollector.domain.volume.calculator;
 
 import eu.jrie.crx.watercollector.domain.volume.StripeCell;
 import eu.jrie.crx.watercollector.domain.volume.VolumeDetails;
+import eu.jrie.crx.watercollector.domain.volume.offset.Offset;
 import eu.jrie.crx.watercollector.domain.volume.offset.OffsetRetriever;
 
 import java.util.ArrayList;
@@ -51,17 +52,9 @@ public class VolumeDetailsCalculator {
 
     public VolumeDetails calculate() {
         var offset = offsetRetriever.retrieveOffset(surface);
+        processLeftOffset(offset.left());
 
-        final int beginIndex = offset.left();
-        final int endIndex = width - offset.right();
-        var surfaceWithCandidates = new ArrayList<>(surface.subList(beginIndex, endIndex));
-
-        for (int i = 0; i < offset.left(); i++) {
-            var bar = surface.get(i);
-            var stripe = buildStripe(bar, 0, height - bar);
-            stripes.add(stripe);
-        }
-
+        var surfaceWithCandidates = prepareSurfaceWithCandidates(offset);
         if (surfaceWithCandidates.size() == 1) {
             final int bar = surfaceWithCandidates.get(0);
             var stripe = buildStripe(bar, 0, height - bar);
@@ -74,18 +67,35 @@ public class VolumeDetailsCalculator {
             } while (!partialResult.remainingSurface().isEmpty());
         }
 
-        for (int i = offset.right(); i >= 1; i--) {
-            final int bar = surface.get(surface.size()-i);
-            var stripe = buildStripe(bar, 0, height - bar);
-            stripes.add(stripe);
-        }
-
+        processRightOffset(offset.right());
         return new VolumeDetails(
                 surface,
                 waterVolume, barsVolume,emptyVolume,
                 width, height,
                 unmodifiableList(stripes)
         );
+    }
+
+    private ArrayList<Integer> prepareSurfaceWithCandidates(Offset offset) {
+        final int beginIndex = offset.left();
+        final int endIndex = width - offset.right();
+        return  new ArrayList<>(surface.subList(beginIndex, endIndex));
+    }
+
+    private void processLeftOffset(final int leftOffset) {
+        for (int i = 0; i < leftOffset; i++) {
+            var bar = surface.get(i);
+            var stripe = buildStripe(bar, 0, height - bar);
+            stripes.add(stripe);
+        }
+    }
+
+    private void processRightOffset(final int rightOffset) {
+        for (int i = rightOffset; i >= 1; i--) {
+            final int bar = surface.get(surface.size()-i);
+            var stripe = buildStripe(bar, 0, height - bar);
+            stripes.add(stripe);
+        }
     }
 
     private PartialResultWithDetails calculateContainerVolumeWithDetails(ArrayList<Integer> surfaceWithCandidates) {
