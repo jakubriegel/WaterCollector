@@ -15,7 +15,11 @@ public class VolumeCalculatorFactory {
         this.offsetRetriever = offsetRetriever;
     }
 
-    public VolumeCalculator create(List<Integer> surface) {
+    public VolumeCalculator createCalculator(List<Integer> surface) {
         return new VolumeCalculator(offsetRetriever, new ArrayList<>(surface));
+    }
+
+    public VolumeDetailsCalculator createCalculatorWithDetails(List<Integer> surface) {
+        return new VolumeDetailsCalculator(offsetRetriever, new ArrayList<>(surface));
     }
 }
