@@ -19,7 +19,17 @@ public class VolumeService {
         if (hasNoContainersCandidates(surface)) {
             return 0;
         } else {
-            var calculator = volumeCalculatorFactory.create(surface);
+            var calculator = volumeCalculatorFactory.createCalculator(surface);
+            return calculator.calculate();
+        }
+    }
+
+    public VolumeDetails calculateVolumeWithDetails(List<Integer> surface) throws InvalidBarHeightException {
+        verifyAllHeightsAreValid(surface);
+        var calculator = volumeCalculatorFactory.createCalculatorWithDetails(surface);
+        if (hasNoContainersCandidates(surface)) {
+            return calculator.emptyDetails();
+        } else {
             return calculator.calculate();
         }
     }

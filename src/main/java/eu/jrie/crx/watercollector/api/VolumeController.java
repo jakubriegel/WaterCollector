@@ -1,5 +1,6 @@
 package eu.jrie.crx.watercollector.api;
 
+import eu.jrie.crx.watercollector.api.message.VolumeDetailsResponse;
 import eu.jrie.crx.watercollector.api.message.VolumeResponse;
 import eu.jrie.crx.watercollector.domain.volume.InvalidBarHeightException;
 import eu.jrie.crx.watercollector.domain.volume.VolumeService;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static java.lang.String.join;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -27,15 +27,28 @@ public class VolumeController {
 
     @GetMapping(value = "volume", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<VolumeResponse> getVolume(@RequestParam List<String> bars) throws InvalidBarHeightException {
-        var surface = bars.stream()
-                .map(Integer::valueOf)
-                .toList();
+        var surface = convertBarsToSurface(bars);
         final int volume = service.calculateVolume(surface);
-        return ok(new VolumeResponse(surface, volume));
+        var response = new VolumeResponse(surface, volume);
+        return ok(response);
     }
 
     @GetMapping(value = "volume/details", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getVolumeDetails(@RequestParam List<String> values) {
-        return ok(join(", ", values));
+    public ResponseEntity<VolumeDetailsResponse> getVolumeDetails(@RequestParam List<String> bars) throws InvalidBarHeightException {
+        var surface = convertBarsToSurface(bars);
+        var details = service.calculateVolumeWithDetails(surface);
+        var response = new VolumeDetailsResponse(
+                details.surface(),
+                details.volume(), details.barsVolume(), details.emptyVolume(),
+                details.width(), details.height(),
+                details.stripes()
+        );
+        return ok(response);
+    }
+
+    private static List<Integer> convertBarsToSurface(List<String> bars) {
+        return bars.stream()
+                .map(Integer::valueOf)
+                .toList();
     }
 }
