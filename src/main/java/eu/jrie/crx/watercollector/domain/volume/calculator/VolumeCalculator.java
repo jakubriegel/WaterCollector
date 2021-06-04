@@ -1,5 +1,6 @@
 package eu.jrie.crx.watercollector.domain.volume.calculator;
 
+import eu.jrie.crx.watercollector.domain.volume.offset.Offset;
 import eu.jrie.crx.watercollector.domain.volume.offset.OffsetRetriever;
 
 import java.util.ArrayList;
@@ -28,13 +29,7 @@ public class VolumeCalculator {
     }
 
     public int calculate() {
-        var offset = offsetRetriever.retrieveOffset(surface);
-        volume -= height * (offset.left() + offset.right());
-
-        final int beginIndex = offset.left();
-        final int endIndex = width - offset.right();
-        var surfaceWithCandidates = new ArrayList<>(surface.subList(beginIndex, endIndex));
-
+        var surfaceWithCandidates = calculateAndProcessOffset();
         if (surfaceWithCandidates.size() == 1) {
             volume -= height;
         } else if (!surfaceWithCandidates.isEmpty()) {
@@ -45,6 +40,18 @@ public class VolumeCalculator {
             } while (!partialResult.remainingSurface().isEmpty());
         }
         return volume;
+    }
+
+    private ArrayList<Integer> calculateAndProcessOffset() {
+        var offset = offsetRetriever.retrieveOffset(surface);
+        volume -= height * (offset.left() + offset.right());
+        return sliceSurfaceWithCandidates(offset);
+    }
+
+    private ArrayList<Integer> sliceSurfaceWithCandidates(Offset offset) {
+        final int beginIndex = offset.left();
+        final int endIndex = width - offset.right();
+        return new ArrayList<>(surface.subList(beginIndex, endIndex));
     }
 
     private PartialResult calculateContainerVolume(ArrayList<Integer> surfaceWithCandidates) {
