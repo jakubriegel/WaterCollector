@@ -10,7 +10,303 @@
 			"item": [
 				{
 					"name": "details",
-					"item": []
+					"item": [
+						{
+							"name": "volume details",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"  pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"  pm.response.to.have.header(\"Content-Type\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains surface\", function () {\r",
+											"  var jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.surface).to.eql([1, 2, 4, 1, 2, 4]);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains correct volume\", function () {\r",
+											"  var jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.volume).to.eql(5);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains correct barsVolume\", function () {\r",
+											"  var jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.barsVolume).to.eql(14);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains correct emptyVolume\", function () {\r",
+											"  var jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.emptyVolume).to.eql(5);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains correct width\", function () {\r",
+											"  var jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.width).to.eql(6);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains correct height\", function () {\r",
+											"  var jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.height).to.eql(4);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains correct stripes\", function () {\r",
+											"  var jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.stripes).to.eql([\r",
+											"    [\"EMPTY\",\"EMPTY\",\"EMPTY\",\"BAR\"], [\"EMPTY\",\"EMPTY\",\"BAR\",\"BAR\"], [\"BAR\",\"BAR\",\"BAR\",\"BAR\"], [\"WATER\",\"WATER\",\"WATER\",\"BAR\"], [\"WATER\",\"WATER\",\"BAR\",\"BAR\"], [\"BAR\",\"BAR\",\"BAR\",\"BAR\"]\r",
+											"  ]);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{service}}/water/volume/details?bars=1,2,4,1,2,4",
+									"host": [
+										"{{service}}"
+									],
+									"path": [
+										"water",
+										"volume",
+										"details"
+									],
+									"query": [
+										{
+											"key": "bars",
+											"value": "1,2,4,1,2,4"
+										},
+										{
+											"key": "bars",
+											"value": "1,2,3,2,1",
+											"disabled": true
+										},
+										{
+											"key": "bars",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "bars",
+											"value": "1,1,1",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "volume details (empty bars)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"  pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"  pm.response.to.have.header(\"Content-Type\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains surface\", function () {\r",
+											"  var jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.surface).to.eql([]);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains correct volume\", function () {\r",
+											"  var jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.volume).to.eql(0);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains correct barsVolume\", function () {\r",
+											"  var jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.barsVolume).to.eql(0);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains correct emptyVolume\", function () {\r",
+											"  var jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.emptyVolume).to.eql(0);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains correct width\", function () {\r",
+											"  var jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.width).to.eql(0);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains correct height\", function () {\r",
+											"  var jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.height).to.eql(0);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains correct stripes\", function () {\r",
+											"  var jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.stripes).to.eql([]);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{service}}/water/volume/details?bars=",
+									"host": [
+										"{{service}}"
+									],
+									"path": [
+										"water",
+										"volume",
+										"details"
+									],
+									"query": [
+										{
+											"key": "bars",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "volume details (no bars)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"  pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"  pm.response.to.have.header(\"Content-Type\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains code\", function () {\r",
+											"  var jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.code).to.eql(\"MISSING_PARAMETER\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains path\", function () {\r",
+											"  var jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.path).to.eql(\"/water/volume/details\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains message\", function () {\r",
+											"  var jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.message).to.eql(\"The request is missing required parameters.\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Contains requiredParameters\", function () {\r",
+											"  var jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.details.requiredParameters).to.eql([\"bars\"]);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{service}}/water/volume/details",
+									"host": [
+										"{{service}}"
+									],
+									"path": [
+										"water",
+										"volume",
+										"details"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "volume details (negative bars)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"  pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"  pm.response.to.have.header(\"Content-Type\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains code\", function () {\r",
+											"  var jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.code).to.eql(\"INVALID_BAR_HEIGHT\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains path\", function () {\r",
+											"  var jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.path).to.eql(\"/water/volume/details\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Contains message\", function () {\r",
+											"  var jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.message).to.eql(\"Provided surface contains negative bar heights.\");\r",
+											"});\r",
+											"\r",
+											"\r",
+											"pm.test(\"Contains surface\", function () {\r",
+											"  var jsonData = pm.response.json();\r",
+											"  pm.expect(jsonData.details.surface).to.eql([1, -2, 3]);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{service}}/water/volume/details?bars=1,-2,3",
+									"host": [
+										"{{service}}"
+									],
+									"path": [
+										"water",
+										"volume",
+										"details"
+									],
+									"query": [
+										{
+											"key": "bars",
+											"value": "1,-2,3"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				},
 				{
 					"name": "volume",
