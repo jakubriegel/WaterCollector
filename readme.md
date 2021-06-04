@@ -111,3 +111,5 @@ Each push triggers tests runs as well as building of jar and Docker image. Only 
 This application can be run on every platform supporting JVM and TCP sockets. 
 Docker is used as example. Provided Dockerfile shows steps necessary to create an executable for the project. 
 It features configurations for two separate environments. Application properties files are included after building the jar, which means configurations can be changed without a need for rebuilding the package.
+
+Jar/image is built during CI process. In _real_ use case these actions would be extended with uploading them to local artifacts store.
